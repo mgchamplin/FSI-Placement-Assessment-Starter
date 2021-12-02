@@ -1,23 +1,60 @@
-// HINT: You can delete this console.log after you no longer need it!
-console.log('JavaScript code has loaded!')
-
 // First, tell us your name
-let yourName = "Jane Doe" // HINT: Replace this with your own name!
-
-// We'll use these variables to track the counts of each cookie type
-let gb = 0      // Gingerbread
-let cc = 0      // Chocolate Chip
-let sugar = 0   // Sugar Sprinkle
+let yourName = "Michael Champlin" // HINT: Replace this with your own name!
 
 // Code to update name display 
 document.getElementById('credit').textContent = `Created by ${yourName}`
 
-// Event listener for clicks on the "+" button for Gingerbread cookies
-document.getElementById('add-gb').addEventListener('click', function() {
-    // HINT: You can delete this console.log after you no longer need it!
-    console.log('Gingerbread + button was clicked!')
+buttonActions = document.querySelectorAll("button")
 
-    // TODO: Write the code to be run when the "+" button for "Gingerbread" is clicked
-})
+const buttonDefinitions = [
+    [ "qty-gb",     "minus-gb",     -1],
+    [ "qty-gb",     "add-gb",       +1],
+    [ "qty-cc",     "minus-cc",     -1],
+    [ "qty-cc",     "add-cc",       +1],
+    [ "qty-sugar",  "minus-sugar",  -1],
+    [ "qty-sugar",  "add-sugar",    +1] ]
+    cookie_type = 0;  //location in matrix
+    button_type = 1;  //location in matrix
+    offset_todo = 2;  //location in matrix
 
-// TODO: Hook up event listeners for the rest of the buttons
+for (let button = 0; button < buttonDefinitions.length; button++) {
+    //
+    // Add listener for each button.  
+    buttonActions[ button ].addEventListener('click', function(e) {
+        if (e.target.id === buttonDefinitions[button][button_type]) 
+            updateCounter(buttonDefinitions[button][cookie_type], 
+                          buttonDefinitions[button][offset_todo]); 
+        })
+    }
+ 
+
+//
+// Parameters:
+//      counterID:  The string identifying which button being clicked
+//      offset:  whether we are adding +1 or -1 to he counter
+function updateCounter(counterID, offset) {
+
+    // Pull the existing counter for that cookie and factor in the +1 or -1 click
+    let current_counter = Number(document.getElementById(counterID).innerHTML);
+    let new_counter_value = current_counter + offset;
+
+    // Make sure that we actually decrement a counter (not below zero)
+    if (new_counter_value >= 0) {
+
+        // Update the individual cookie counter
+        document.getElementById(counterID).innerHTML = new_counter_value
+
+        // Update the total counter
+        document.getElementById("qty-total").innerHTML = 
+            Number(document.getElementById("qty-total").innerHTML) + offset;
+    }
+}
+
+
+
+
+
+
+
+
+
